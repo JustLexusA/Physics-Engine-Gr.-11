@@ -10,6 +10,7 @@ var Engine = Matter.Engine,
         Svg = Matter.Svg,
         Bodies = Matter.Bodies;
 
+// Arrays
 
 function setup() {
     MyWorld();
@@ -34,6 +35,7 @@ function MyWorld() {
         }
     });
     // Create the canvas, this adds the renderer's canvas which uses the p5.js drawing tools to render over the physics world.
+    background('rgb(110, 110, 110)')
     createCanvas(windowWidth, windowHeight, render.canvas)
 
     // All sprites and objects
@@ -49,16 +51,17 @@ function MyWorld() {
         density: 0.05
     });
 
+    // Composite(s)
+    var Balls = Composite.create();
+    Composite.add(Balls, [cueball, staticBall]);
 
-
-    // Composite
-    Composite.add(engine.world, [cueball, staticBall])
-
-    // Run the renderer, this lets time pass to calculate the physics of the bodies inside the composite rather than letting them render in one frame forever.
-    Render.run(render);
-
+    Composite.add(engine.world, Balls)
+    
     // Create the runner
     var runner = Runner.create();
+    
+    // Run the renderer, this lets time pass to calculate the physics of the bodies inside the composite rather than letting them render in one frame forever.
+    Render.run(render);
     
     // Run the engine
     Runner.run(runner, engine);
