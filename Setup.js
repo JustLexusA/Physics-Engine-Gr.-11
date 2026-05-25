@@ -6,6 +6,7 @@ var Engine = Matter.Engine,
         MouseConstraint = Matter.MouseConstraint,
         Mouse = Matter.Mouse,
         Composite = Matter.Composite,
+        Collision = Matter.Collision,
         Vertices = Matter.Vertices,
         Svg = Matter.Svg,
         Bodies = Matter.Bodies;
@@ -38,24 +39,50 @@ function MyWorld() {
     background('rgb(110, 110, 110)')
     createCanvas(windowWidth, windowHeight, render.canvas)
 
+    // add mouse control
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: true
+                }
+            }
+        });
+
+    Composite.add(world, mouseConstraint);
+
+    // keep the mouse in sync with rendering
+    render.mouse = mouse;
+
     // All sprites and objects
     cueball = Bodies.circle(innerWidth / 2, innerHeight / 2, 20, {
         density: 0.01,
         friction: 0.05,
         frictionAir: 0.01,
-        restitution: 0.95
+        restitution: 1
     });
 
-    staticBall = Bodies.circle(innerWidth / 2 + 10, (innerHeight / 2) + 100, 30, {
+    staticBall = Bodies.circle(innerWidth / 2 + 10, (innerHeight / 2) + 100, 25, {
         isStatic: true,
         density: 0.05
     });
 
     // Composite(s)
     var Balls = Composite.create();
-    Composite.add(Balls, [cueball, staticBall]);
+    var Pockets = Composite.create();
+    Composite.add(Pockets, [staticBall]);
+    Composite.add(Balls, [cueball]);
 
-    Composite.add(engine.world, Balls)
+    Composite.add(engine.world, [Balls, Pockets]);
+
+    // Check if cueball collides with the pocket,
+    var scratch = Collision.collides(cueball, staticBall)
+
+    if (scratch) {
+        Composite.clear(cueball)
+    }
     
     // Create the runner
     var runner = Runner.create();
