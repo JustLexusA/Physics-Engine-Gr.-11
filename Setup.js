@@ -22,7 +22,7 @@ function MyWorld() {
     var engine = Engine.create(),
         world = engine.world;
     // Change gravity
-    engine.gravity.y = 1
+    engine.gravity.y = 0
 
     // Create a renderer
     var render = Render.create({
@@ -44,7 +44,7 @@ function MyWorld() {
         mouseConstraint = MouseConstraint.create(engine, {
             mouse: mouse,
             constraint: {
-                stiffness: 0.2,
+                stiffness: 0.05,
                 render: {
                     visible: true
                 }
@@ -55,6 +55,15 @@ function MyWorld() {
 
     // keep the mouse in sync with rendering
     render.mouse = mouse;
+    
+    // Walls of the pool table
+        // Left wall
+        PTLeftWall = Bodies.rectangle(innerWidth / 4, innerHeight / 2, 20, innerHeight / 2, {
+            isStatic: true,
+            render: {
+                strokeStyle: 'transparent'
+            }
+        });
 
     // All sprites and objects
     cueball = Bodies.circle(innerWidth / 2, innerHeight / 2, 20, {
@@ -64,7 +73,7 @@ function MyWorld() {
         restitution: 1
     });
 
-    staticBall = Bodies.circle(innerWidth / 2 + 10, (innerHeight / 2) + 100, 25, {
+    staticBall = Bodies.circle(innerWidth / 4 + 10, (innerHeight / 2) + innerHeight/4, 25, {
         isStatic: true,
         density: 0.05
     });
@@ -72,10 +81,12 @@ function MyWorld() {
     // Composite(s)
     var Balls = Composite.create();
     var Pockets = Composite.create();
+    var tableWalls = Composite.create();
+    Composite.add(tableWalls, [PTLeftWall])
     Composite.add(Pockets, [staticBall]);
     Composite.add(Balls, [cueball]);
 
-    Composite.add(engine.world, [Balls, Pockets]);
+    Composite.add(engine.world, [Balls, Pockets, tableWalls]);
 
     // Check if cueball collides with the pocket,
     var scratch = Collision.collides(cueball, staticBall)
