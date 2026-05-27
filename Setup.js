@@ -32,11 +32,11 @@ function MyWorld() {
             width: innerWidth,
             height: innerHeight,
             wireframes: false,
-            background: 'rgb(100, 100, 100)'
+            background: 'rgb(48, 48, 48)'
         }
     });
     // Create the canvas, this adds the renderer's canvas which uses the p5.js drawing tools to render over the physics world.
-    background('rgb(110, 110, 110)')
+    background('rgb(43, 43, 43)')
     createCanvas(windowWidth, windowHeight, render.canvas)
 
     // add mouse control
@@ -61,17 +61,55 @@ function MyWorld() {
         PTLeftWall = Bodies.rectangle(innerWidth / 4, innerHeight / 2, 20, innerHeight / 2, {
             isStatic: true,
             render: {
+                fillStyle: 'rgb(100, 75, 25)',
+                strokeStyle: 'transparent'
+            }
+        });
+        // Right wall 
+        PTRightWall = Bodies.rectangle(innerWidth - innerWidth / 4, innerHeight / 2, 20, innerHeight / 2, {
+            isStatic: true,
+            render: {
+                fillStyle: 'rgb(100, 75, 25)',
+                strokeStyle: 'transparent'
+            }
+        });
+        // Top wall 
+        PTTopWall = Bodies.rectangle(innerWidth / 2, innerHeight / 4, innerWidth / 2, 20, {
+            isStatic: true,
+            render: {
+                fillStyle: 'rgb(100, 75, 25)',
+                strokeStyle: 'transparent'
+            }
+        });
+        // Bottom wall 
+        PTBottomWall = Bodies.rectangle(innerWidth / 2, innerHeight - innerHeight / 4, innerWidth / 2, 20, {
+            isStatic: true,
+            render: {
+                fillStyle: 'rgb(100, 75, 25)',
                 strokeStyle: 'transparent'
             }
         });
 
     // All sprites and objects
-    cueball = Bodies.circle(innerWidth / 2, innerHeight / 2, 20, {
+    cueball = Bodies.circle(innerWidth / 2, innerHeight / 2, 10, {
         density: 0.01,
-        friction: 0.05,
-        frictionAir: 0.01,
-        restitution: 1
+        friction: 0.035,
+        frictionAir: 0.02,
+        restitution: 0.85,
+        render : {
+            fillStyle: 'white'
+        }
     });
+    Eightball = Bodies.circle(innerWidth / 2, innerHeight / 2, 10, {
+        density: 0.01,
+        friction: 0.025,
+        frictionAir: 0.02,
+        restitution: 0.85,
+        render : {
+            fillStyle: 'black'
+        }
+    });
+
 
     staticBall = Bodies.circle(innerWidth / 4 + 10, (innerHeight / 2) + innerHeight/4, 25, {
         isStatic: true,
@@ -82,11 +120,11 @@ function MyWorld() {
     var Balls = Composite.create();
     var Pockets = Composite.create();
     var tableWalls = Composite.create();
-    Composite.add(tableWalls, [PTLeftWall])
+    Composite.add(tableWalls, [PTLeftWall, PTRightWall, PTBottomWall, PTTopWall])
     Composite.add(Pockets, [staticBall]);
-    Composite.add(Balls, [cueball]);
+    Composite.add(Balls, [cueball, Eightball]);
 
-    Composite.add(engine.world, [Balls, Pockets, tableWalls]);
+    Composite.add(engine.world, [Balls, tableWalls]);
 
     // Check if cueball collides with the pocket,
     var scratch = Collision.collides(cueball, staticBall)
