@@ -91,7 +91,7 @@ function MyWorld() {
         });
 
     // All sprites and objects
-    cueball = Bodies.circle(innerWidth / 2, innerHeight / 2, 10, {
+    cueball = Bodies.circle(innerWidth / 2 + 100, innerHeight / 2, 10, {
         density: 0.01,
         friction: 0.035,
         frictionAir: 0.02,
@@ -100,7 +100,7 @@ function MyWorld() {
             fillStyle: 'white'
         }
     });
-    Eightball = Bodies.circle(innerWidth / 2, innerHeight / 2, 10, {
+    Eightball = Bodies.circle(innerWidth / 2 - 100, innerHeight / 2, 10, {
         density: 0.01,
         friction: 0.025,
         frictionAir: 0.02,
