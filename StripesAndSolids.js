@@ -5,7 +5,7 @@ class ball {
         number = 8,
         velocity = { x: 0, y: 0 },
         position = { x: 0, y: 0 },
-        radius = 20
+        radius = 10
     ) { // ballType will be stripes or solids, there will be 7 for each player, solids are numbered 1-7 while stripes are numbered 9-15
         this.type = ballType;
         this.number = number;
@@ -68,9 +68,9 @@ class ball {
 
         const body = Bodies.circle(this.position.x, this.position.y, this.radius, {
             density: 0.01,
-            friction: 0.05,
-            frictionAir: 0.01,
-            restitution: 1,
+            friction: 0.1,
+            frictionAir: 0.02,
+            restitution: 0.9,
             render: {
                 fillStyle: this.colour
             }
@@ -95,5 +95,11 @@ class ball {
         noStroke();
         fill(this.colour);
         ellipse(x, y, this.radius * 2, this.radius * 2);
+
+        // Draw the ball number in the center
+        fill('white');
+        textAlign(CENTER, CENTER);
+        textSize(this.radius);
+        text(this.number, x, y);
     }
 }
