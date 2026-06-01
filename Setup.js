@@ -11,7 +11,14 @@ var Engine = Matter.Engine,
         Svg = Matter.Svg,
         Bodies = Matter.Bodies;
 
-// Arrays
+// Arrays/Composites
+    // Composite(s)
+    var Balls = Composite.create();
+    var Pockets = Composite.create();
+    var tableWalls = Composite.create();
+
+    // Array(s)
+    var PoolBalls = []
 
 function setup() {
     MyWorld();
@@ -53,8 +60,15 @@ function MyWorld() {
 
     Composite.add(world, mouseConstraint);
 
+    // Create bodies of the walls
+    createWalls();
+
+    // Create balls on the pool table area
+    createBalls();
+
     // keep the mouse in sync with rendering
     render.mouse = mouse;
+<<<<<<< HEAD
     
     // Walls of the pool table
     // Scale the length of the bottom and top borders to be a 2:1 ratio with the left and right borders
@@ -92,49 +106,15 @@ function MyWorld() {
                 strokeStyle: 'transparent'
             }
         });
+=======
+>>>>>>> ccc1b8c6a044c42bd10d03c278acf224b4d7d245
 
-    // All sprites and objects
-    cueball = Bodies.circle(innerWidth / 2 + 100, innerHeight / 2, 10, {
-        density: 0.01,
-        friction: 0.035,
-        frictionAir: 0.02,
-        restitution: 0.85,
-        render : {
-            fillStyle: 'white'
-        }
-    });
-    Eightball = Bodies.circle(innerWidth / 2 - 100, innerHeight / 2, 10, {
-        density: 0.01,
-        friction: 0.025,
-        frictionAir: 0.02,
-        restitution: 0.85,
-        render : {
-            fillStyle: 'black'
-        }
-    });
-
-
-    staticBall = Bodies.circle(innerWidth / 4 + 10, (innerHeight / 2) + innerHeight/4, 25, {
-        isStatic: true,
-        density: 0.05
-    });
-
-    // Composite(s)
-    var Balls = Composite.create();
-    var Pockets = Composite.create();
-    var tableWalls = Composite.create();
+    // Add all bodies into proper composites
     Composite.add(tableWalls, [PTLeftWall, PTRightWall, PTBottomWall, PTTopWall])
-    Composite.add(Pockets, [staticBall]);
-    Composite.add(Balls, [cueball, Eightball]);
+    Composite.add(Pockets, []);
+    Composite.add(Balls, PoolBalls);
 
     Composite.add(engine.world, [Balls, tableWalls]);
-
-    // Check if cueball collides with the pocket,
-    var scratch = Collision.collides(cueball, staticBall)
-
-    if (scratch) {
-        Composite.clear(cueball)
-    }
     
     // Create the runner
     var runner = Runner.create();
