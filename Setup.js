@@ -57,8 +57,11 @@ function MyWorld() {
     render.mouse = mouse;
     
     // Walls of the pool table
+    // Scale the length of the bottom and top borders to be a 2:1 ratio with the left and right borders
+    var TopBottomBorderLength = innerWidth / 2
+    var SideBorderLength = TopBottomBorderLength / 2 - 20
         // Left wall
-        PTLeftWall = Bodies.rectangle(innerWidth / 4, innerHeight / 2, 20, innerHeight / 2, {
+        PTLeftWall = Bodies.rectangle(innerWidth / 4, innerHeight / 2, 20, SideBorderLength, {
             isStatic: true,
             render: {
                 fillStyle: 'rgb(100, 75, 25)',
@@ -66,7 +69,7 @@ function MyWorld() {
             }
         });
         // Right wall 
-        PTRightWall = Bodies.rectangle(innerWidth - innerWidth / 4, innerHeight / 2, 20, innerHeight / 2, {
+        PTRightWall = Bodies.rectangle(innerWidth - innerWidth / 4, innerHeight / 2, 20, SideBorderLength, {
             isStatic: true,
             render: {
                 fillStyle: 'rgb(100, 75, 25)',
@@ -74,7 +77,7 @@ function MyWorld() {
             }
         });
         // Top wall 
-        PTTopWall = Bodies.rectangle(innerWidth / 2, innerHeight / 4, innerWidth / 2, 20, {
+        PTTopWall = Bodies.rectangle(innerWidth / 2, innerHeight / 2 - SideBorderLength / 2, TopBottomBorderLength, 20, {
             isStatic: true,
             render: {
                 fillStyle: 'rgb(100, 75, 25)',
@@ -82,7 +85,7 @@ function MyWorld() {
             }
         });
         // Bottom wall 
-        PTBottomWall = Bodies.rectangle(innerWidth / 2, innerHeight - innerHeight / 4, innerWidth / 2, 20, {
+        PTBottomWall = Bodies.rectangle(innerWidth / 2, innerHeight / 2 + SideBorderLength / 2, TopBottomBorderLength, 20, {
             isStatic: true,
             render: {
                 fillStyle: 'rgb(100, 75, 25)',
